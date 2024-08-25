@@ -1,0 +1,133 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class StudentGradeTracker {
+    private Map<String, Double> grades;
+    private Scanner scanner;
+
+    public StudentGradeTracker() {
+        grades = new HashMap<>();
+        scanner = new Scanner(System.in);
+    }
+
+    public void run() {
+        while (true) {
+            System.out.println("Student Grade Tracker");
+            System.out.println("1. Add Grade");
+            System.out.println("2. Edit Grade");
+            System.out.println("3. Delete Grade");
+            System.out.println("4. Calculate Average Grade");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume newline left-over
+
+            switch (choice) {
+                case 1:
+                    addGrade();
+                    break;
+                case 2:
+                    editGrade();
+                    break;
+                case 3:
+                    deleteGrade();
+                    break;
+                case 4:
+                    calculateAverageGrade();
+                    break;
+                case 5:
+                    System.out.println("Exiting...");
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please choose a valid option.");
+            }
+        }
+    }
+
+    private void addGrade() {
+        System.out.print("Enter subject/assignment: ");
+        String subject = scanner.nextLine();
+        System.out.print("Enter grade: ");
+        double grade = scanner.nextDouble();
+        scanner.nextLine(); // Consume newline left-over
+        grades.put(subject, grade);
+        System.out.println("Grade added successfully!");
+    }
+
+    private void editGrade() {
+        System.out.print("Enter subject/assignment to edit: ");
+        String subject = scanner.nextLine();
+        if (grades.containsKey(subject)) {
+            System.out.print("Enter new grade: ");
+            double newGrade = scanner.nextDouble();
+            scanner.nextLine(); // Consume newline left-over
+            grades.put(subject, newGrade);
+            System.out.println("Grade updated successfully!");
+        } else {
+            System.out.println("Subject/assignment not found!");
+        }
+    }
+
+    private void deleteGrade() {
+        System.out.print("Enter subject/assignment to delete: ");
+        String subject = scanner.nextLine();
+        if (grades.containsKey(subject)) {
+            grades.remove(subject);
+            System.out.println("Grade deleted successfully!");
+        } else {
+            System.out.println("Subject/assignment not found!");
+        }
+    }
+
+    private void calculateAverageGrade() {
+        if (grades.isEmpty()) {
+            System.out.println("No grades to calculate!");
+        } else {
+            double sum = 0;
+            for (double grade : grades.values()) {
+                sum += grade;
+            }
+            double average = sum / grades.size();
+            System.out.printf("Average Grade: %.2f%n", average);
+            System.out.println("Letter Grade: " + getLetterGrade(average));
+            System.out.println("GPA: " + getGPA(average));
+        }
+    }
+
+    private String getLetterGrade(double average) {
+        if (average >= 90) {
+            return "A";
+        } else if (average >= 80) {
+            return "B";
+        } else if (average >= 70) {
+            return "C";
+        } else if (average >= 60) {
+            return "D";
+        } else {
+            return "F";
+        }
+    }
+
+    private String getGPA(double average) {
+        if (average >= 90) {
+            return "4.0";
+        } else if (average >= 80) {
+            return "3.0";
+        } else if (average >= 70) {
+            return "2.0";
+        } else if (average >= 60) {
+            return "1.0";
+        } else {
+            return "0.0";
+        }
+    }
+
+    public static void main(String[] args) {
+        StudentGradeTracker tracker = new StudentGradeTracker();
+        tracker.run();
+    }
+}
+
+
+//This program uses a HashMap to store grades, where the key is the subject/assignment and the value is the grade. It provides options for adding, editing, and deleting grades, as well as calculating the average grade, letter grade, and GPA.
